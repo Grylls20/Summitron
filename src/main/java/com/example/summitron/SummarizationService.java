@@ -69,10 +69,10 @@ public class SummarizationService {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return "Error: Failed to fetch the article from the URL.";
+            return "Error: Failed to fetch the article. Please check the URL and ensure the website allows scraping. Details: " + e.getMessage();
         } catch (Exception e) {
             e.printStackTrace();
-            return "An unexpected error occurred.";
+            return "An unexpected error occurred: " + e.getMessage();
         }
     }
 }
