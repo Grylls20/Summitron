@@ -1,8 +1,0 @@
-services:
-  - type: web
-    name: summitron
-    runtime: docker
-    plan: free
-    envVars:
-      - key: openrouter.api.key
-        sync: false

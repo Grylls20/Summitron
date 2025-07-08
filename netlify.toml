@@ -1,0 +1,11 @@
+[build]
+  # This is the directory where your static files are located.
+  publish = "src/main/resources/static"
+
+  # Since this is a static site with no build step, the command is empty.
+  command = ""
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
