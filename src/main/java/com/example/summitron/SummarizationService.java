@@ -13,17 +13,17 @@ import java.io.IOException;
 @Service
 public class SummarizationService {
 
-    @Value("${openrouter.api.key}")
-    private String openRouterApiKey;
+    @Value("${together.api.key}")
+    private String togetherApiKey;
 
-    private static final String API_URL = "https://openrouter.ai/api/v1/chat/completions";
+    private static final String API_URL = "https://api.together.xyz/v1/chat/completions";
 
     private final OkHttpClient client = new OkHttpClient();
 
     public String summarize(String url) {
         try {
-            if (openRouterApiKey == null || openRouterApiKey.isEmpty() || openRouterApiKey.equals("${openrouter.api.key}")) {
-                return "Error: OpenRouter API key is not configured. Please ensure it is set in your environment.";
+            if (togetherApiKey == null || togetherApiKey.isEmpty() || togetherApiKey.equals("${together.api.key}")) {
+                return "Error: Together AI API key is not configured. Please ensure it is set in your environment.";
             }
 
             // 1. Fetch and parse the article content from the URL
@@ -44,7 +44,7 @@ public class SummarizationService {
             messages.put(message);
 
             JSONObject jsonBody = new JSONObject();
-            jsonBody.put("model", "google/gemini-flash-1.5");
+            jsonBody.put("model", "meta-llama/Llama-3-70b-chat-hf");
             jsonBody.put("messages", messages);
 
             RequestBody body = RequestBody.create(jsonBody.toString(), mediaType);
@@ -52,10 +52,8 @@ public class SummarizationService {
             Request request = new Request.Builder()
                     .url(API_URL)
                     .post(body)
-                    .header("Authorization", "Bearer " + openRouterApiKey)
+                    .header("Authorization", "Bearer " + togetherApiKey)
                     .addHeader("Content-Type", "application/json")
-                    .addHeader("HTTP-Referer", "http://localhost:9000") // Required by OpenRouter for free-tier
-                    .addHeader("X-Title", "Summitron") // Required by OpenRouter for free-tier
                     .build();
 
             // 3. Execute the request and get the response
