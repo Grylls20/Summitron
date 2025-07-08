@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: summitron
+    env: java
+    plan: free
+    build:
+      command: ./mvnw clean package
+    startCommand: java -jar target/summitron-0.0.1-SNAPSHOT.jar
+    envVars:
+      - key: openrouter.api.key
+        sync: false
