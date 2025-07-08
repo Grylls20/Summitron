@@ -1,0 +1,20 @@
+# Environment variables
+.env
+
+# IDE files
+.idea/
+*.iml
+
+# Maven
+target/
+
+# Build files
+*.jar
+*.war
+
+# Log files
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
