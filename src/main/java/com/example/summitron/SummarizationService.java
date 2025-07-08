@@ -25,7 +25,10 @@ public class SummarizationService {
             }
 
             // 1. Fetch and parse the article content from the URL
-            Document doc = Jsoup.connect(url).get();
+            Document doc = Jsoup.connect(url)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36")
+                    .timeout(60000) // 60 seconds
+                    .get();
             String articleText = doc.body().text(); // A simple way to get text, might need refinement
 
             // 2. Prepare the request for OpenRouter API
