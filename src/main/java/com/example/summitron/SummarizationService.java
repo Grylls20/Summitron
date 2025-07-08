@@ -31,7 +31,13 @@ public class SummarizationService {
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36")
                     .timeout(60000) // 60 seconds
                     .get();
-            String articleText = doc.body().text(); // A simple way to get text, might need refinement
+            String articleText = doc.body().text();
+
+            // Truncate the article text to a safe length to avoid exceeding the model's context window.
+            int maxLength = 20000; // Approx. 5000 tokens
+            if (articleText.length() > maxLength) {
+                articleText = articleText.substring(0, maxLength);
+            }
 
             // 2. Prepare the request for OpenRouter API
             MediaType mediaType = MediaType.parse("application/json");
@@ -46,6 +52,7 @@ public class SummarizationService {
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("model", "meta-llama/Llama-3-70b-chat-hf");
             jsonBody.put("messages", messages);
+            jsonBody.put("max_tokens", 512);
 
             RequestBody body = RequestBody.create(jsonBody.toString(), mediaType);
 
