@@ -14,14 +14,16 @@ import java.io.IOException;
 public class SummarizationService {
 
     @Value("${openrouter.api.key}")
-    private String openrouterApiKey;
+    private String openRouterApiKey;
+
+    private static final String API_URL = "https://openrouter.ai/api/v1/chat/completions";
 
     private final OkHttpClient client = new OkHttpClient();
 
     public String summarize(String url) {
         try {
-            if (openrouterApiKey == null || openrouterApiKey.equals("YOUR_OPENROUTER_API_KEY_HERE")) {
-                return "Error: OpenRouter API key is not configured. Please set it in application.properties.";
+            if (openRouterApiKey == null || openRouterApiKey.isEmpty() || openRouterApiKey.equals("${openrouter.api.key}")) {
+                return "Error: OpenRouter API key is not configured. Please ensure it is set in your environment.";
             }
 
             // 1. Fetch and parse the article content from the URL
@@ -48,9 +50,9 @@ public class SummarizationService {
             RequestBody body = RequestBody.create(jsonBody.toString(), mediaType);
 
             Request request = new Request.Builder()
-                    .url("https://openrouter.ai/api/v1/chat/completions")
+                    .url(API_URL)
                     .post(body)
-                    .addHeader("Authorization", "Bearer " + openrouterApiKey)
+                    .header("Authorization", "Bearer " + openRouterApiKey)
                     .addHeader("Content-Type", "application/json")
                     .addHeader("HTTP-Referer", "http://localhost:9000") // Required by OpenRouter for free-tier
                     .addHeader("X-Title", "Summitron") // Required by OpenRouter for free-tier
