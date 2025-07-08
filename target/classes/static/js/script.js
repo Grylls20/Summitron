@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // TODO: Replace this with the actual URL of your deployed Google Cloud Run service
-            const backendApiUrl = 'https://summitron-backend-placeholder.a.run.app';
+            const backendApiUrl = 'https://summitron-backend-e44nuxjg4a-uc.a.run.app';
 
             const response = await fetch(`${backendApiUrl}/summarize`, {
                 method: 'POST',
