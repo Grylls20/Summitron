@@ -1,8 +1,7 @@
 package com.example.summitron;
 
-import okhttp3.*;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.google.cloud.language.v1.*;
+import com.google.cloud.language.v1.Document.Type;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,18 +12,17 @@ import java.io.IOException;
 @Service
 public class SummarizationService {
 
-    @Value("${together.api.key}")
-    private String togetherApiKey;
-
-    private static final String API_URL = "https://api.together.xyz/v1/chat/completions";
-
-    private final OkHttpClient client = new OkHttpClient();
+    @Value("${google.api.key}")
+    private String googleApiKey;
 
     public String summarize(String url) {
         try {
-            if (togetherApiKey == null || togetherApiKey.isEmpty() || togetherApiKey.equals("${together.api.key}")) {
-                return "Error: Together AI API key is not configured. Please ensure it is set in your environment.";
+            if (googleApiKey == null || googleApiKey.isEmpty() || googleApiKey.equals("${google.api.key}")) {
+                return "Error: Google Cloud API key is not configured. Please ensure it is set in your environment.";
             }
+
+            // Set the Google API key in the environment
+            System.setProperty("GOOGLE_APPLICATION_CREDENTIALS", googleApiKey);
 
             // 1. Fetch and parse the article content from the URL
             Document doc = Jsoup.connect(url)
@@ -33,55 +31,53 @@ public class SummarizationService {
                     .get();
             String articleText = doc.body().text();
 
-            // Truncate the article text to a safe length to avoid exceeding the model's context window.
-            int maxLength = 20000; // Approx. 5000 tokens
+            // Truncate the article text to a safe length
+            int maxLength = 5000; // Google's recommended max length
             if (articleText.length() > maxLength) {
                 articleText = articleText.substring(0, maxLength);
             }
 
-            // 2. Prepare the request for OpenRouter API
-            MediaType mediaType = MediaType.parse("application/json");
+            // 2. Use Google's Natural Language API for summarization
+            try (LanguageServiceClient language = LanguageServiceClient.create()) {
+                // Set the content and type of the document
+                com.google.cloud.language.v1.Document document =
+                    com.google.cloud.language.v1.Document.newBuilder()
+                        .setContent(articleText)
+                        .setType(Type.PLAIN_TEXT)
+                        .build();
 
-            JSONObject message = new JSONObject();
-            message.put("role", "user");
-            message.put("content", "Summarize the following article in a few concise paragraphs:\n\n" + articleText);
+                // Analyze the document's entities
+                AnalyzeEntitiesRequest request =
+                    AnalyzeEntitiesRequest.newBuilder()
+                        .setDocument(document)
+                        .setEncodingType(EncodingType.UTF8)
+                        .build();
 
-            JSONArray messages = new JSONArray();
-            messages.put(message);
-
-            JSONObject jsonBody = new JSONObject();
-            jsonBody.put("model", "meta-llama/Llama-3-70b-chat-hf");
-            jsonBody.put("messages", messages);
-            jsonBody.put("max_tokens", 512);
-
-            RequestBody body = RequestBody.create(jsonBody.toString(), mediaType);
-
-            Request request = new Request.Builder()
-                    .url(API_URL)
-                    .post(body)
-                    .header("Authorization", "Bearer " + togetherApiKey)
-                    .addHeader("Content-Type", "application/json")
-                    .build();
-
-            // 3. Execute the request and get the response
-            try (Response response = client.newCall(request).execute()) {
-                if (!response.isSuccessful()) {
-                    return "Error: Failed to get summary from OpenRouter. Status: " + response.code() + " " + response.body().string();
+                AnalyzeEntitiesResponse response = language.analyzeEntities(request);
+                
+                // Extract key entities as a simple summary
+                StringBuilder summary = new StringBuilder("Key entities in the article:\n");
+                for (Entity entity : response.getEntitiesList()) {
+                    if (entity.getSalience() > 0.01) { // Only include significant entities
+                        summary.append("- ").append(entity.getName()).append(" (")
+                              .append(entity.getType()).append(")\n");
+                    }
                 }
-
-                String responseBody = response.body().string();
-                JSONObject jsonResponse = new JSONObject(responseBody);
-                JSONArray choices = jsonResponse.getJSONArray("choices");
-                if (choices.length() > 0) {
-                    return choices.getJSONObject(0).getJSONObject("message").getString("content").trim();
-                }
-                return "Error: No summary was returned by the API.";
+                
+                // Add document sentiment
+                AnalyzeSentimentResponse sentimentResponse = language.analyzeSentiment(document);
+                Sentiment sentiment = sentimentResponse.getDocumentSentiment();
+                summary.append("\nOverall Sentiment: ")
+                      .append(String.format("%.2f", sentiment.getScore()))
+                      .append(" (")
+                      .append(sentiment.getScore() >= 0 ? "Positive" : "Negative")
+                      .append(")");
+                
+                return summary.toString();
             }
         } catch (IOException e) {
-            e.printStackTrace();
             return "Error: Failed to fetch the article. Please check the URL and ensure the website allows scraping. Details: " + e.getMessage();
         } catch (Exception e) {
-            e.printStackTrace();
             return "An unexpected error occurred: " + e.getMessage();
         }
     }
