@@ -1,35 +1,52 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Summitron - AI Article Summarizer</title>
-    <link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Summitron - AI Article Summarizer</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer src="script.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
-<body>
-    <header class="header">
-        <h1>Summitron AI Summarizer</h1>
-    </header>
+<body style="background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), url('Background.jpg'); background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat;">
+  <header class="app-header">
+    <div class="logo-container">
+      <div class="logo">S</div>
+      <span class="app-name">Summitron</span>
+    </div>
+  </header>
+  <div class="container">
+    <h1 class="title">Summarize articles with <span class="highlight">LLaMA 3</span></h1>
+    <p class="subtitle">Simplify your reading—Summitron turns long articles into clear and concise summaries.</p>
 
-    <div class="container">
-        <form id="summary-form">
-            <input type="url" name="url" placeholder="Enter article URL..." required>
-            <button type="submit">Summarize</button>
-        </form>
+    <form id="summary-form" class="form">
+      <input type="url" id="article-url" placeholder="Paste article URL here..." required />
+      <button type="submit"><i class="fas fa-magic"></i> Summarize</button>
+    </form>
 
-        <div id="loader" class="loader"></div>
-
-        <div id="error-message" class="error-message" style="display: none;"></div>
-
-        <div id="summary-box" class="summary-box" style="display: none;">
-            <h2>Summary for: <span id="url-display"></span></h2>
-            <p id="summary-content"></p>
-        </div>
+    <div id="loader" class="loader hidden">
+      <div class="spinner"></div>
+      <p>Generating summary...</p>
     </div>
 
-    <footer class="footer">
-        <p>&copy; 2025 Summitron. All rights reserved.</p>
-    </footer>
+    <div id="error-message" class="error hidden">
+      <i class="fas fa-exclamation-circle"></i>
+      Could not generate summary. Please try again.
+    </div>
 
-    <script src="/js/script.js"></script>
+    <div id="summary-box" class="summary-box hidden">
+      <div class="summary-header">
+        <h3>Article Summary</h3>
+        <button id="copy-summary"><i class="far fa-copy"></i> Copy</button>
+      </div>
+      <div id="url-display" class="url-display"></div>
+      <div id="summary-content" class="summary-content"></div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Summitron. .
+  </footer>
 </body>
 </html>
