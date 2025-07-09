@@ -19,7 +19,8 @@ document.getElementById("summary-form").addEventListener("submit", async functio
     }
 
     // Call the backend API
-    const response = await fetch('http://localhost:9000/api/summarize', {
+    const apiUrl = window.env?.API_URL || 'http://localhost:9000';
+    const response = await fetch(`${apiUrl}/api/summarize`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
