@@ -17,33 +17,49 @@
       <span class="app-name">Summitron</span>
     </div>
   </header>
-  <div class="container">
-    <h1 class="title">Summarize articles with <span class="highlight">LLaMA 3</span></h1>
-    <p class="subtitle">Simplify your reading—Summitron turns long articles into clear and concise summaries.</p>
-
-    <form id="summary-form" class="form">
-      <input type="url" id="article-url" placeholder="Paste article URL here..." required />
-      <button type="submit"><i class="fas fa-magic"></i> Summarize</button>
-    </form>
-
-    <div id="loader" class="loader hidden">
-      <div class="spinner"></div>
-      <p>Generating summary...</p>
-    </div>
-
-    <div id="error-message" class="error hidden">
-      <i class="fas fa-exclamation-circle"></i>
-      Could not generate summary. Please try again.
-    </div>
-
-    <div id="summary-box" class="summary-box hidden">
-      <div class="summary-header">
-        <h3>Article Summary</h3>
-        <button id="copy-summary"><i class="far fa-copy"></i> Copy</button>
+  <div class="main-layout">
+    <div class="history-section">
+      <div class="history-header">
+        <h3><i class="fas fa-history"></i> History</h3>
       </div>
-      <div id="url-display" class="url-display"></div>
-      <div id="summary-content" class="summary-content"></div>
+      <div class="history-scroll-container">
+        <div id="history-list" class="history-list">
+          <!-- History items will be added here dynamically -->
+        </div>
+      </div>
     </div>
+    <div class="main-content">
+      <h1 class="title">Summarize articles with <span class="highlight">LLaMA 3</span></h1>
+      <p class="subtitle">Simplify your reading—Summitron turns long articles into clear and concise summaries.</p>
+
+      <form id="summary-form" class="form">
+        <input type="url" id="article-url" placeholder="Paste article URL here..." required />
+        <button type="submit"><i class="fas fa-magic"></i> Summarize</button>
+      </form>
+
+      <div id="loader" class="loader hidden">
+        <div class="spinner"></div>
+        <p>Generating summary...</p>
+      </div>
+
+      <div id="error-message" class="error hidden">
+        <i class="fas fa-exclamation-circle"></i>
+        Could not generate summary. Please try again.
+      </div>
+
+      <div id="summary-box" class="summary-box hidden">
+        <div class="summary-header">
+          <h3>Article Summary</h3>
+          <div class="summary-actions">
+            <button id="save-summary" title="Save to history"><i class="fas fa-save"></i> Save</button>
+            <button id="copy-summary"><i class="far fa-copy"></i> Copy</button>
+          </div>
+        </div>
+        <div id="url-display" class="url-display"></div>
+        <div id="summary-content" class="summary-content"></div>
+      </div>
+    </div>
+  </div>
   </div>
 
   <footer>

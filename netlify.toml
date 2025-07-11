@@ -1,8 +1,6 @@
 [build]
   # This is the directory where your static files are located.
-  publish = "frontend"
-
-  # Since this is a static site with no build step, the command is empty.
+  publish = "."
   command = ""
 
 [[redirects]]
