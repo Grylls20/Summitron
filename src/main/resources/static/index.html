@@ -5,29 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Summitron - AI Article Summarizer</title>
   <link rel="stylesheet" href="styles.css"/>
-  <script defer src="script.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <script src="env.js"></script>
 </head>
 <body style="background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), url('Background.jpg'); background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat;">
+
   <header class="app-header">
     <div class="logo-container">
       <div class="logo">S</div>
       <span class="app-name">Summitron</span>
     </div>
+    <div class="social-links">
+      <a href="https://www.linkedin.com/in/piyush-kumar-05b4141ab/" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+        <i class="fab fa-linkedin"></i>
+      </a>
+      <a href="https://github.com/Grylls20" target="_blank" rel="noopener noreferrer" title="GitHub">
+        <i class="fab fa-github"></i>
+      </a>
+      <a href="https://drive.google.com/file/d/1rDKmKSTMDDTQyU3tNPTAyPLYBlI8k4uw/view" target="_blank" rel="noopener noreferrer" title="Resume">
+        <i class="fas fa-file-alt"></i>
+      </a>
+      <a href="https://x.com/iSHPiyush" target="_blank" rel="noopener noreferrer" title="X (Twitter)">
+        <i class="fab fa-x-twitter"></i>
+      </a>
+      <a href="https://wa.me/918219005649" target="_blank" rel="noopener noreferrer" title="WhatsApp">
+        <i class="fab fa-whatsapp fa-lg"></i>
+      </a>
+      
+    </div>
   </header>
+
   <div class="main-layout">
-    <div class="history-section">
+    <!-- History Sidebar -->
+    <aside class="history-sidebar">
       <div class="history-header">
-        <h3><i class="fas fa-history"></i> History</h3>
+        <h3><i class="fas fa-history history-icon"></i> History</h3>
       </div>
       <div class="history-scroll-container">
-        <div id="history-list" class="history-list">
+        <ul id="history-list" class="history-list">
           <!-- History items will be added here dynamically -->
-        </div>
+        </ul>
+        <p id="no-history" class="no-history">No history yet</p>
       </div>
-    </div>
+    </aside>
+
     <div class="main-content">
       <h1 class="title">Summarize articles with <span class="highlight">LLaMA 3</span></h1>
       <p class="subtitle">Simplify your reading—Summitron turns long articles into clear and concise summaries.</p>
@@ -60,10 +81,24 @@
       </div>
     </div>
   </div>
-  </div>
 
-  <footer>
-    &copy; 2025 Summitron. .
+  <footer class="footer">
+    <div class="footer-content">
+      <span class="copyright">&copy; 2025 Summitron</span>
+      <div class="pikachu-sticker">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="Pikachu" class="pikachu">
+      </div>
+      <div class="built-by-container">
+        <span class="built-by">Built by Piyush</span>
+      </div>
+    </div>
   </footer>
+
+  <!-- Load environment variables -->
+  <script src="env.js"></script>
+
+  <!-- Load app logic -->
+  <script src="script.js"></script>
+
 </body>
 </html>
