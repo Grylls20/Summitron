@@ -2,7 +2,7 @@
 
 **An intelligent web application that summarizes any online article into a concise and easy-to-read digest.**
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge)](https://your-netlify-app-url.netlify.app) <!-- TODO: Replace with your Netlify URL -->
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge)](https://summitron.netlify.app/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 ---
